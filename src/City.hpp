@@ -1,3 +1,6 @@
+#ifndef CITY_HPP
+#define CITY_HPP
+
 class City{
 private:
     int id;
@@ -11,3 +14,5 @@ public:
     double getX() const;
     double getY() const;
 };
+
+#endif

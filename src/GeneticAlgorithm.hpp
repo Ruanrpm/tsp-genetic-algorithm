@@ -20,6 +20,8 @@ public:
     double euclideanDistance(double x1, double y1, double x2, double y2);
 
     double getDistance(int i, int j);
+
+    const std::vector<std::vector<double>>& getDistanceMatrix() const;
 };
 
 #endif

@@ -33,3 +33,7 @@ double GeneticAlgorithm:: euclideanDistance(double x1, double y1, double x2, dou
 double GeneticAlgorithm::getDistance(int i, int j){
     return distanceMatrix[i][j];
 }
+
+const vector<vector<double>>& GeneticAlgorithm::getDistanceMatrix() const {
+    return distanceMatrix;
+}

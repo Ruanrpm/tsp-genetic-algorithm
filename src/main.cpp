@@ -1,5 +1,6 @@
 #include "City.hpp"
 #include "GeneticAlgorithm.hpp"
+#include "Individual.hpp"
 #include <iostream>
 #include <vector>
 #include <iomanip>
@@ -71,6 +72,30 @@ int main() {
         }
         cout << endl;
     }
+
+    cout << "\n================ INDIVIDUO =================" << endl;
+
+    vector<int> cityIds;
+
+    for (const auto& city : listaCidades) {
+        cityIds.push_back(city.getId());
+    }
+
+    Individual individuo(cityIds);
+
+    // Calcula o fitness usando a matriz de distâncias
+    double fitness = individuo.fitnessCalc(ga.getDistanceMatrix());
+
+    cout << "Rota: ";
+
+    for (int cityId : individuo.getRoute()) {
+        cout << cityId << " -> ";
+    }
+
+    // Retorna para a primeira cidade
+    cout << individuo.getRoute()[0] << endl;
+
+    cout << "Fitness: " << fitness << endl;
 
     return 0;
 }

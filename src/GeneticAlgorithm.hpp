@@ -3,23 +3,29 @@
 
 #include <vector>
 #include "City.hpp"
+#include "Individual.hpp"
 
 class GeneticAlgorithm {
 private:
     std::vector<City> cities;
     std::vector<std::vector<double>> distanceMatrix;
-    int population;
+    std::vector<Individual> population;
+    int populationSize;
     int generations;
     double mutationRate;
 
 public:
-    GeneticAlgorithm(std::vector<City> cities, int population, int generations, double mutationRate);
+    GeneticAlgorithm(std::vector<City> cities, int populationSize, int generations, double mutationRate);
 
     void distanceMatrixCalc();
+
+    void initializePopulation(const std::vector<int>& cityIds);
 
     double euclideanDistance(double x1, double y1, double x2, double y2);
 
     double getDistance(int i, int j);
+
+    std::vector<Individual>& getPopulation();
 
     const std::vector<std::vector<double>>& getDistanceMatrix() const;
 };

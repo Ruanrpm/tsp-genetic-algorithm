@@ -6,12 +6,17 @@
 class Individual {
 private:
     std::vector<int> route;
-    double fitness = 0.0;
+    double distance = 0.0;
+    double fitness = 0;
 
 public:
     Individual(const std::vector<int>& cityId);
 
-    double fitnessCalc(const std::vector<std::vector<double>>& distanceMatrix);
+    double distenceCalc(const std::vector<std::vector<double>>& distanceMatrix);
+
+    double fitnessCalc();
+
+    double getFitness() const;
 
     const std::vector<int>& getRoute() const;
 };

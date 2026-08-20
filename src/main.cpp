@@ -7,6 +7,8 @@
 #include <random>
 #include <string>
 
+#define POPULATION_SIZE 10
+
 using namespace std;
 
 int main() {
@@ -39,32 +41,22 @@ int main() {
     // GeneticAlgorithm ga(listaCidades, 50, 100, 0.05);
 
     // Instancia o Algoritmo Genético e calcula as distâncias
-    GeneticAlgorithm ga(listaCidades, 50, 100, 0.05);
+    GeneticAlgorithm ga(listaCidades, POPULATION_SIZE, 100, 0.05);
     ga.distanceMatrixCalc();
 
     // Configuração de precisão para imprimir valores com 2 casas decimais
-    cout << fixed << setprecision(2);
+    cout << fixed << setprecision(3);
 
-    // 1. IMPRIMIR LISTA DE CIDADES
-    cout << "================= CIDADES GENERADAS =================" << endl;
-    cout << setw(8) << "ID" << setw(12) << "X" << setw(12) << "Y" << endl;
-    cout << "----------------------------------------------------" << endl;
-    for (const auto& city : listaCidades) {
-        cout << setw(8) << city.getId() 
-             << setw(12) << city.getX() 
-             << setw(12) << city.getY() << endl;
-    }
-
-    cout << "\n================ MATRIZ DE DISTANCIAS ================" << endl;
+    cout << "\n================ MATRIZ DE distanceS ================" << endl;
     
-    // Cabecalho da tabela de distancias (IDs das Cidades)
+    // Cabecalho da tabela de distances (IDs das Cidades)
     cout << setw(10) << "ID Cidades";
     for (const auto& city : listaCidades) {
         cout << setw(10) << ("ID " + to_string(city.getId()));
     }
     cout << "\n----------------------------------------------------" << endl;
 
-    // Linhas com as distancias obtidas da classe
+    // Linhas com as distances obtidas da classe
     for (size_t i = 0; i < listaCidades.size(); i++) {
         cout << setw(10) << ("ID " + to_string(listaCidades[i].getId()));
         for (size_t j = 0; j < listaCidades.size(); j++) {
@@ -73,29 +65,28 @@ int main() {
         cout << endl;
     }
 
-    cout << "\n================ INDIVIDUO =================" << endl;
+    cout << "\n================ POPULACAO =================" << endl;
 
-    vector<int> cityIds;
+    auto& population = ga.getPopulation();
 
-    for (const auto& city : listaCidades) {
-        cityIds.push_back(city.getId());
+    for (size_t i = 0; i < population.size(); i++) {
+
+        Individual& individual = population[i];
+
+        double distance = individual.distenceCalc(ga.getDistanceMatrix());
+        double fitness = individual.fitnessCalc();
+
+        cout << "\nIndividual " << i + 1 << endl;
+
+        cout << "Rota: ";
+
+        for (int cityId : individual.getRoute()) {
+            cout << cityId << " -> ";
+        }
+
+        cout << individual.getRoute()[0] << endl;
+
+        cout << "Distancia: " << distance << endl;
+        cout << "Fitness: " << fitness << endl;
     }
-
-    Individual individuo(cityIds);
-
-    // Calcula o fitness usando a matriz de distâncias
-    double fitness = individuo.fitnessCalc(ga.getDistanceMatrix());
-
-    cout << "Rota: ";
-
-    for (int cityId : individuo.getRoute()) {
-        cout << cityId << " -> ";
-    }
-
-    // Retorna para a primeira cidade
-    cout << individuo.getRoute()[0] << endl;
-
-    cout << "Fitness: " << fitness << endl;
-
-    return 0;
 }

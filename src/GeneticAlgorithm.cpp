@@ -2,14 +2,29 @@
 #include <cmath>
 #include <vector>
 #include "City.hpp"
+#include "Individual.hpp"
 #include <iostream>
 
 using namespace std;
 
-GeneticAlgorithm::GeneticAlgorithm(vector<City> cities, int population, int generations, double mutationRate) 
-    : cities(cities), distanceMatrix(cities.size(), vector<double>(cities.size(), 0.0)), population(population), generations(generations), mutationRate(mutationRate) {
+GeneticAlgorithm::GeneticAlgorithm(vector<City> cities, int populationSize, int generations, double mutationRate) 
+    : cities(cities), distanceMatrix(cities.size(), vector<double>(cities.size(), 0.0)), populationSize(populationSize), generations(generations), mutationRate(mutationRate) {
         distanceMatrixCalc();
+
+        vector<int> cityIds;
+
+        for(int i = 0; i < cities.size(); i++) {
+            cityIds.push_back(cities[i].getId());
+        }
+
+        initializePopulation(cityIds);
     }
+
+void GeneticAlgorithm::initializePopulation(const vector<int>& cityIds) {
+    for (int i = 0; i < populationSize; i++) {
+        population.push_back(Individual(cityIds));
+    }
+}
 
 void GeneticAlgorithm::distanceMatrixCalc(){
     for (int i = 0; i < cities.size(); i++) {
@@ -24,6 +39,10 @@ void GeneticAlgorithm::distanceMatrixCalc(){
             }
         }
     }
+}
+
+vector<Individual>& GeneticAlgorithm::getPopulation() {
+    return population;
 }
 
 double GeneticAlgorithm:: euclideanDistance(double x1, double y1, double x2, double y2) {

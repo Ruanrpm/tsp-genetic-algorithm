@@ -10,14 +10,22 @@ Individual::Individual(const vector<int>& cityIds) : route(cityIds){
     mt19937 g(rd());
 
     // Embaralhar o vetor
-    std::shuffle(route.begin(), route.end(), g);
+    std::shuffle(route.begin() + 1, route.end(), g);
 }
 
-double Individual::fitnessCalc(const vector<vector<double>>& distanceMatrix){
+double Individual::distenceCalc(const vector<vector<double>>& distanceMatrix){
     for (int i = 0; i < route.size()-1; i++){
-        fitness += distanceMatrix[route[i]][route[i+1]];
+        distance += distanceMatrix[route[i]][route[i+1]];
     }
-    fitness += distanceMatrix[route[route.size() - 1]][route[0]];
+    distance += distanceMatrix[route[route.size() - 1]][route[0]];
+    return  distance;
+}
+
+double Individual::fitnessCalc(){
+    return fitness = 1/distance;
+}
+
+double Individual::getFitness() const {
     return fitness;
 }
 

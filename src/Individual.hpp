@@ -21,6 +21,8 @@ public:
     double getFitness() const;
 
     const std::vector<int>& getRoute() const;
+
+    std::vector<int>& getRoute();
 };
 
 #endif

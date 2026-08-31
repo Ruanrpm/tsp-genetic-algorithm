@@ -61,7 +61,7 @@ int main() {
         listaCidades,
         POPULATION_SIZE,
         100,
-        0.05
+        0.1
     );
 
 
@@ -229,6 +229,43 @@ int main() {
          << "Fitness: "
          << childFitness << endl;
 
+
+    cout << "\n================ MUTACAO ================="
+     << endl;
+
+    cout << "\nRota antes da mutacao: ";
+
+    for (int city : child.getRoute()) {
+        cout << city << " -> ";
+    }
+
+    cout << child.getRoute()[0] << endl;
+
+    ga.mutate(child);
+
+    cout << "\nRota depois da mutacao: ";
+
+    for (int city : child.getRoute()) {
+        cout << city << " -> ";
+    }
+
+    cout << child.getRoute()[0] << endl;
+
+    double mutatedDistance =
+        child.distenceCalc(
+            ga.getDistanceMatrix()
+        );
+
+    double mutatedFitness =
+        child.fitnessCalc();
+
+    cout << fixed << setprecision(2)
+        << "Distancia: "
+        << mutatedDistance << endl;
+
+    cout << fixed << setprecision(6)
+        << "Fitness: "
+        << mutatedFitness << endl;
 
     return 0;
 }

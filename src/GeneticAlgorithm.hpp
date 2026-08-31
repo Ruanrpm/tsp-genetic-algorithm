@@ -32,6 +32,8 @@ public:
     Individual tournamentSelection(int tournamentSize);
 
     Individual orderCrossover(const Individual& parent1, const Individual& parent2);
+
+    void mutate(Individual& individual);
 };
 
 #endif

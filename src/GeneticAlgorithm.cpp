@@ -135,3 +135,34 @@ Individual GeneticAlgorithm:: orderCrossover(const Individual& parent1, const In
     
     return Individual(childRoute, false);
 }
+
+void GeneticAlgorithm::mutate(Individual& individual) {
+
+    random_device rd;
+    mt19937 gen(rd());
+
+    // Verifica se o indivíduo vai sofrer mutação
+    uniform_real_distribution<double> probability(0.0, 1.0);
+
+    if (probability(gen) >= mutationRate) {
+        return;
+    }
+
+    vector<int>& route = individual.getRoute();
+
+    // Escolhe duas posições aleatórias
+    uniform_int_distribution<int> position(1, route.size() - 1);
+
+    int pos1 = position(gen);
+    int pos2 = position(gen);
+
+    // Garante que as posições sejam diferentes
+    while (pos1 == pos2) {
+        pos2 = position(gen);
+    }
+
+    // Swap mutation
+    swap(route[pos1], route[pos2]);
+    individual.distenceCalc(distanceMatrix);
+    individual.fitnessCalc();
+}

@@ -44,3 +44,7 @@ double Individual::getFitness() const {
 const vector<int>& Individual::getRoute() const {
     return route;
 }
+
+vector<int>& Individual::getRoute() {
+    return route;
+}

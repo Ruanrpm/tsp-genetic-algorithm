@@ -28,6 +28,8 @@ public:
     std::vector<Individual>& getPopulation();
 
     const std::vector<std::vector<double>>& getDistanceMatrix() const;
+
+    Individual tournamentSelection(int tournamentSize);
 };
 
 #endif

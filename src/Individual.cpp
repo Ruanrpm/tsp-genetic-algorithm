@@ -12,6 +12,7 @@ Individual::Individual(const vector<int>& cityIds) : route(cityIds){
     // Embaralhar o vetor
     std::shuffle(route.begin() + 1, route.end(), g);
 }
+Individual::Individual() {}
 
 double Individual::distenceCalc(const vector<vector<double>>& distanceMatrix){
     for (int i = 0; i < route.size()-1; i++){

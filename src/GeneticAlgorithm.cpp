@@ -56,3 +56,19 @@ double GeneticAlgorithm::getDistance(int i, int j){
 const vector<vector<double>>& GeneticAlgorithm::getDistanceMatrix() const {
     return distanceMatrix;
 }
+
+Individual GeneticAlgorithm::tournamentSelection(int tournamentSize) {
+    Individual best;
+
+    for (int i = 0; i < tournamentSize; i++) {
+        int index = rand() % populationSize;
+
+        Individual candidate = population[index];
+
+        if (i == 0 || candidate.fitnessCalc() > best.fitnessCalc()) {
+            best = candidate;
+        }
+    }
+
+    return best;
+}

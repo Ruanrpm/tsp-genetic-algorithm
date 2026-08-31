@@ -86,7 +86,29 @@ int main() {
 
         cout << individual.getRoute()[0] << endl;
 
-        cout << "Distancia: " << distance << endl;
-        cout << "Fitness: " << fitness << endl;
+        cout << setprecision(2) << "Distancia: " << distance << endl;
+        cout << setprecision(6) << "Fitness: " << fitness << endl;
+    }
+
+    cout << "\n================ TORNEIO =================" << endl;
+
+    for (int i = 0; i < 5; i++) {
+
+        Individual vencedor = ga.tournamentSelection(3);
+
+        cout << "\nTorneio " << i + 1 << endl;
+
+        cout << "Rota: ";
+
+        for (int cityId : vencedor.getRoute()) {
+            cout << cityId << " -> ";
+        }
+
+        cout << vencedor.getRoute()[0] << endl;
+
+        cout << "Fitness: "
+            << fixed << setprecision(6)
+            << vencedor.fitnessCalc()
+            << endl;
     }
 }

@@ -11,6 +11,7 @@ private:
 
 public:
     Individual(const std::vector<int>& cityId);
+    Individual();
 
     double distenceCalc(const std::vector<std::vector<double>>& distanceMatrix);
 

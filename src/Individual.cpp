@@ -12,9 +12,20 @@ Individual::Individual(const vector<int>& cityIds) : route(cityIds){
     // Embaralhar o vetor
     std::shuffle(route.begin() + 1, route.end(), g);
 }
+
 Individual::Individual() {}
 
+Individual::Individual(const vector<int>& cityIds, bool shuffleRoute): route(cityIds){
+    if (shuffleRoute) {
+        random_device rd;
+        mt19937 g(rd());
+
+        shuffle(route.begin() + 1, route.end(), g);
+    }
+}
+
 double Individual::distenceCalc(const vector<vector<double>>& distanceMatrix){
+    distance = 0.0;
     for (int i = 0; i < route.size()-1; i++){
         distance += distanceMatrix[route[i]][route[i+1]];
     }

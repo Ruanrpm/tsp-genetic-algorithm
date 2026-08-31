@@ -30,6 +30,8 @@ public:
     const std::vector<std::vector<double>>& getDistanceMatrix() const;
 
     Individual tournamentSelection(int tournamentSize);
+
+    Individual orderCrossover(const Individual& parent1, const Individual& parent2);
 };
 
 #endif

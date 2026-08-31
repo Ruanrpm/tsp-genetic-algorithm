@@ -4,6 +4,7 @@
 #include "City.hpp"
 #include "Individual.hpp"
 #include <iostream>
+#include <random>
 
 using namespace std;
 
@@ -71,4 +72,66 @@ Individual GeneticAlgorithm::tournamentSelection(int tournamentSize) {
     }
 
     return best;
+}
+
+Individual GeneticAlgorithm:: orderCrossover(const Individual& parent1, const Individual& parent2) {
+    const vector<int>& pai1 = parent1.getRoute();
+    const vector<int>& pai2 = parent2.getRoute();
+
+    int routeSize = pai1.size();
+
+    // Escole dois pontos de corte
+    random_device rd;
+    mt19937 gen(rd());
+
+    uniform_int_distribution<int> dist(1, routeSize - 1);
+
+    int start = dist(gen);
+    int end = dist(gen);
+
+    if (start > end) {
+        swap(start, end);
+    }
+
+    vector<int> childRoute(routeSize, -1);
+    childRoute[0] = 0;
+
+    // Copia o primeiro pai
+    for (int i = start; i <= end; i++) {
+        childRoute[i] = pai1[i];
+    }
+
+    // Começa do end pois começa preenchendo o restante seguindo a ordem do pai 2
+    int currentPosition = end + 1;
+
+    if (currentPosition >= routeSize) {
+        currentPosition = 1;
+    }
+
+    // Percorre o segundo pai
+    for (int i = 0; i < routeSize - 1; i++) {
+        int city = pai2[(end + i) % (routeSize - 1) + 1];
+
+        bool alreadyExists = false;
+
+        // Verifica se a sidade já existe no segmento
+        for (int j = start; j <= end; j++) {
+            if (childRoute[j] == city) {
+                alreadyExists = true;
+                break;
+            }
+        }
+
+        if (!alreadyExists) {
+            childRoute[currentPosition] = city;
+
+            currentPosition++;
+
+            if (currentPosition >= routeSize) {
+                currentPosition = 1;
+            }
+        }
+    }
+    
+    return Individual(childRoute, false);
 }

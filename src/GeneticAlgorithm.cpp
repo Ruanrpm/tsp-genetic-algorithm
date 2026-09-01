@@ -163,6 +163,47 @@ void GeneticAlgorithm::mutate(Individual& individual) {
 
     // Swap mutation
     swap(route[pos1], route[pos2]);
-    individual.distenceCalc(distanceMatrix);
-    individual.fitnessCalc();
+}
+
+Individual GeneticAlgorithm::getBestIndividual() {
+
+    Individual best = population[0];
+
+    for (int i = 1; i < population.size(); i++) {
+
+        if (population[i].getFitness() > best.getFitness()) {
+            best = population[i];
+        }
+    }
+
+    return best;
+}
+
+void GeneticAlgorithm::nextGeneration() {
+    vector<Individual> newPopulation;
+
+    // Elitismo
+    Individual best = getBestIndividual();
+
+    newPopulation.push_back(best);
+
+    // Filhos
+    while (newPopulation.size() < populationSize) {
+        Individual parent1 = tournamentSelection(4);
+        Individual parent2 = tournamentSelection(4);
+
+        // Crossover
+        Individual child = orderCrossover(parent1, parent2);
+
+        // mutação
+        mutate(child);
+
+        // Avaliação do filho
+        child.distenceCalc(distanceMatrix);
+        child.fitnessCalc();
+
+        newPopulation.push_back(child);
+    }
+
+    population = newPopulation;
 }

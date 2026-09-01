@@ -34,6 +34,10 @@ public:
     Individual orderCrossover(const Individual& parent1, const Individual& parent2);
 
     void mutate(Individual& individual);
+
+    Individual getBestIndividual();
+
+    void nextGeneration();
 };
 
 #endif

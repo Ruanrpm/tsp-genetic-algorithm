@@ -1,0 +1,5 @@
+c++ main.cpp City.cpp GeneticAlgorithm.cpp Individual.cpp -o tsp.exe
+
+./tsp.exe
+
+python plot_results.py

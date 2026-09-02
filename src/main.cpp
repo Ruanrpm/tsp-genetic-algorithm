@@ -6,6 +6,9 @@
 #include <vector>
 #include <iomanip>
 #include <random>
+#include <fstream>
+#include <string>
+#include <filesystem>
 
 using namespace std;
 
@@ -14,14 +17,27 @@ using namespace std;
 // CONFIGURAÇÃO DO ALGORITMO
 // =========================================================
 
-const int TOTAL_CIDADES = 25;
-const int POPULATION_SIZE = 100;
-const int GENERATIONS = 500;
-const double MUTATION_RATE = 0.10;
-const int TOURNAMENT_SIZE = 4;
+const int TOTAL_CIDADES = 65;
+const int POPULATION_SIZE = 1000;
+const int GENERATIONS = 1500;
+const double MUTATION_RATE = 0.3;
+const int TOURNAMENT_SIZE = 2;
+
+const int EXECUTION_ID = 3;
 
 
 int main() {
+
+    // =====================================================
+    // PASTA DE RESULTADOS
+    // =====================================================
+
+    filesystem::path resultadoDir =
+        "../resultados/execucao_" +
+        to_string(EXECUTION_ID);
+
+    filesystem::create_directories(resultadoDir);
+
 
     // =====================================================
     // GERAR CIDADES
@@ -81,10 +97,16 @@ int main() {
 
     double bestFitness = best.getFitness();
 
-    double bestDistance =
-        best.distenceCalc(
-            ga.getDistanceMatrix()
-        );
+
+    // =====================================================
+    // HISTÓRICO DA EVOLUÇÃO
+    // =====================================================
+
+    vector<int> generationHistory;
+    vector<double> fitnessHistory;
+
+    generationHistory.push_back(0);
+    fitnessHistory.push_back(bestFitness);
 
 
     // =====================================================
@@ -108,7 +130,7 @@ int main() {
         ga.nextGeneration();
 
 
-        // Pega o melhor indivíduo da geração
+        // Melhor indivíduo da geração
         Individual currentBest =
             ga.getBestIndividual();
 
@@ -116,15 +138,20 @@ int main() {
             currentBest.getFitness();
 
 
+        // Guarda o melhor fitness da geração
+        generationHistory.push_back(
+            generation
+        );
+
+        fitnessHistory.push_back(
+            currentFitness
+        );
+
+
         // Verifica se houve melhoria
         if (currentFitness > bestFitness) {
 
             bestFitness = currentFitness;
-
-            bestDistance =
-                currentBest.distenceCalc(
-                    ga.getDistanceMatrix()
-                );
 
             cout << "Melhoria       | "
                  << "Geracao: "
@@ -184,6 +211,77 @@ int main() {
          << endl;
 
     cout << "========================================"
+         << endl;
+
+
+    // =====================================================
+    // SALVAR EVOLUÇÃO
+    // =====================================================
+
+    ofstream evolutionFile(
+        resultadoDir / "evolucao.csv"
+    );
+
+    evolutionFile
+        << "generation,fitness\n";
+
+    for (size_t i = 0;
+         i < generationHistory.size();
+         i++) {
+
+        evolutionFile
+            << generationHistory[i]
+            << ","
+            << fitnessHistory[i]
+            << "\n";
+    }
+
+    evolutionFile.close();
+
+
+    // =====================================================
+    // SALVAR ROTA FINAL
+    // =====================================================
+
+    ofstream routeFile(
+        resultadoDir / "rota_final.csv"
+    );
+
+    routeFile
+        << "city_id,x,y,route_position\n";
+
+    const vector<int>& finalRoute =
+        finalBest.getRoute();
+
+    for (size_t position = 0;
+         position < finalRoute.size();
+         position++) {
+
+        int cityId = finalRoute[position];
+
+        const City& city =
+            listaCidades[cityId];
+
+        routeFile
+            << city.getId()
+            << ","
+            << city.getX()
+            << ","
+            << city.getY()
+            << ","
+            << position
+            << "\n";
+    }
+
+    routeFile.close();
+
+
+    // =====================================================
+    // FINAL
+    // =====================================================
+
+    cout << "\nResultados salvos em: "
+         << resultadoDir
          << endl;
 
 

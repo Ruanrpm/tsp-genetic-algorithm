@@ -69,7 +69,8 @@ int main() {
         listaCidades,
         POPULATION_SIZE,
         GENERATIONS,
-        MUTATION_RATE
+        MUTATION_RATE,
+        TOURNAMENT_SIZE
     );
 
 

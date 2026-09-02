@@ -13,9 +13,10 @@ private:
     int populationSize;
     int generations;
     double mutationRate;
+    int tournamentSize;
 
 public:
-    GeneticAlgorithm(std::vector<City> cities, int populationSize, int generations, double mutationRate);
+    GeneticAlgorithm(std::vector<City> cities, int populationSize, int generations, double mutationRate, int tournamentSize);
 
     void distanceMatrixCalc();
 

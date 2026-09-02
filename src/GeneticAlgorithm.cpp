@@ -8,8 +8,8 @@
 
 using namespace std;
 
-GeneticAlgorithm::GeneticAlgorithm(vector<City> cities, int populationSize, int generations, double mutationRate) 
-    : cities(cities), distanceMatrix(cities.size(), vector<double>(cities.size(), 0.0)), populationSize(populationSize), generations(generations), mutationRate(mutationRate) {
+GeneticAlgorithm::GeneticAlgorithm(vector<City> cities, int populationSize, int generations, double mutationRate, int tournamentSize) 
+    : cities(cities), distanceMatrix(cities.size(), vector<double>(cities.size(), 0.0)), populationSize(populationSize), generations(generations), mutationRate(mutationRate), tournamentSize(tournamentSize) {
         distanceMatrixCalc();
 
         vector<int> cityIds;
@@ -189,8 +189,8 @@ void GeneticAlgorithm::nextGeneration() {
 
     // Filhos
     while (newPopulation.size() < populationSize) {
-        Individual parent1 = tournamentSelection(4);
-        Individual parent2 = tournamentSelection(4);
+        Individual parent1 = tournamentSelection(tournamentSize);
+        Individual parent2 = tournamentSelection(tournamentSize);
 
         // Crossover
         Individual child = orderCrossover(parent1, parent2);

@@ -114,7 +114,7 @@ Individual GeneticAlgorithm:: orderCrossover(const Individual& parent1, const In
 
         bool alreadyExists = false;
 
-        // Verifica se a sidade já existe no segmento
+        // Verifica se a cidade já existe no segmento
         for (int j = start; j <= end; j++) {
             if (childRoute[j] == city) {
                 alreadyExists = true;
